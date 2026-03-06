@@ -262,28 +262,43 @@ header.scrolled {
 }
 
 /* --- HERO SLIDER --- */
+
 .hero-slider {
-  height: 85vh;
+  top: 10%;
   position: relative;
+  width: 100%;
+  height: 80vh; /* Kumukuha ng 60% ng taas ng screen, perpekto sa desktop at laptop */
+  min-height: 400px; /* Para siguradong hindi masyadong liliit sa cellphone */
   overflow: hidden;
+  border-radius: 12px; /* (Optional) Para medyo bilog ang kanto at mukhang modern */  margin-bottom: 30px;
 }
+/* Ang normal na slide (Nakatago) */
 .slide {
   position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 1.5s ease;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  display: flex;
-  align-items: center;
-  padding: 0 4%;
-  transform: scale(1.05);
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+
+  /* DAGDAG ITO: Para lagpasan ng mouse ang invisible slides! */
+  pointer-events: none;
+  z-index: 1;
 }
+
+/* Ang active na slide (Nakikita) */
 .slide.active {
   opacity: 1;
-  transform: scale(1);
+
+  /* DAGDAG ITO: Buhayin lang ang click kapag ito ang nakalabas! */
+  pointer-events: auto;
+  z-index: 5;
 }
 .slide::after {
+  pointer-events: none;
   content: "";
   position: absolute;
   inset: 0;
@@ -292,10 +307,12 @@ header.scrolled {
     linear-gradient(to top, var(--bg-color) 0%, transparent 40%);
 }
 .hero-content {
-  position: relative;
+  top: 30%;
+  position: absolute;
+  bottom: 10%; /* Ilalagay ang text sa ibabang bahagi ng slider */
+  left: 5%;
   z-index: 10;
-  max-width: 50%;
-  margin-top: 10vh;
+  max-width: 600px;
 }
 .hero-title {
   font-size: 4rem;

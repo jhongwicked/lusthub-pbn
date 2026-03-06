@@ -254,12 +254,22 @@ async function initHeroSlider() {
   if (!slider) return;
   const videos = await fetchVideos("hd", 5);
 
+  // Linisin muna ang slider bago lagyan ng bago
+  slider.innerHTML = "";
+
   videos.forEach((item, i) => {
+    // --- STATIC REDIRECTION LOGIC PARA SA HERO SLIDER ---
+    let videoUrl = `/player.html?id=${item.id}`; // Default fallback
+    if (window.staticVideoIndex && window.staticVideoIndex[item.id]) {
+      videoUrl = `/watch/${window.staticVideoIndex[item.id]}.html`; // Static SEO page!
+    }
+
+    // Pinalitan natin ang z-index at dinagdagan ng pointer-events
     slider.innerHTML += `
-        <div class="slide ${i === 0 ? "active" : ""}" style="background-image:url(${item.default_thumb?.src || ""})">
-            <div class="hero-content">
+        <div class="slide ${i === 0 ? "active" : ""}" style="background-image:url('${item.default_thumb?.src || ""}')">
+            <div class="hero-content" style="position: relative; z-index: 9999; pointer-events: auto;">
                 <h1 class="hero-title animate-on-scroll is-visible">${item.title}</h1>
-                <button class="hero-btn animate-on-scroll is-visible" onclick="window.location.href='player.html?id=${item.id}'">
+                <button class="hero-btn animate-on-scroll is-visible" style="position: relative; z-index: 10000; cursor: pointer; pointer-events: auto;" onclick="window.location.href='${videoUrl}'">
                     <i class="fas fa-play"></i> Play Now
                 </button>
             </div>
@@ -583,8 +593,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.getElementById("heroSlider")) {
     initHeroSlider();
     initSmartSearch();
-    buildSectionRow("Trending Now", "trending", "row-trending");
-
     buildSectionRow("Trending Now", "trending", "row-trending");
     buildSectionRow("New Uploads", "latest", "row-latest");
     buildSectionRow("Top Rated HD", "hd", "row-toprated");
