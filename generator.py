@@ -4,7 +4,7 @@ import xmlrpc.client
 # --- GLOBAL CONFIGURATION ---
 API_BASE = "https://www.eporner.com/api/v2/video/search/"
 QUERIES = ["top", "trending", "latest", "hd"]  # Mga kategorya na kukunin natin
-PAGES_PER_QUERY = 300  # Ilang pages per query (e.g., 2 pages x 30 videos = 60 per query)
+PAGES_PER_QUERY = 200  # Ilang pages per query (e.g., 2 pages x 30 videos = 60 per query)
 
 # [MULTI-CLUSTER PBN CONFIGURATION]
 # Palitan ang mga ito ng mga totoong domain at server paths mo
