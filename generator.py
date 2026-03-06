@@ -1,4 +1,6 @@
 import requests, os, re, time, json
+import xmlrpc.client
+
 
 # --- GLOBAL CONFIGURATION ---
 API_BASE = "https://www.eporner.com/api/v2/video/search/"
@@ -203,6 +205,8 @@ def process_targets(all_videos):
         ) as f:
             json.dump(CURRENT_INDEX_DB, f)
 
+        ping_pingomatic("LustHub Premium", domain)
+
 
 if __name__ == "__main__":
     print("🎬 Starting LustHub PBN Generator...")
@@ -213,3 +217,15 @@ if __name__ == "__main__":
     else:
         print("❌ Walang nakuha sa API. Aborting.")
     print(f"\n🎉 All tasks completed in {round(time.time() - start_time, 2)} seconds.")
+
+
+def ping_pingomatic(site_name, site_url):
+    """Nagpapadala ng ping sa Ping-o-matic para mabilis ma-index"""
+    print(f"    📡 Pinging Ping-o-matic for {site_name}...")
+    try:
+        server = xmlrpc.client.ServerProxy("http://rpc.pingomatic.com/")
+        # Ang weblogUpdates.ping ay nangangailangan ng (Title, URL)
+        result = server.weblogUpdates.ping(site_name, site_url)
+        print(f"    ✅ Ping-o-matic SUCCESS: {result}")
+    except Exception as e:
+        print(f"    ❌ Ping-o-matic ERROR: {e}")
