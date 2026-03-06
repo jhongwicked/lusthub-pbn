@@ -1,0 +1,36 @@
+name: Auto Generate LustHub Content
+
+on:
+  schedule:
+    # Tatakbo ito araw-araw tuwing midnight (UTC time)
+    - cron: "0 0 * * *"
+  workflow_dispatch: # Nagbibigay ng "Run workflow" button para ma-trigger mo manually
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install Required Packages
+        run: pip install requests
+
+      - name: Run Python Generator
+        run: python generator.py
+
+      - name: Commit and Push Changes to GitHub
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Auto-generated new adult videos 🚀" || exit 0
+          git push

@@ -1,0 +1,905 @@
+/* Gamitin ang 'Saira' mula sa CinemaRoll */
+@import url("https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;800&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+
+:root {
+  --netflix-red: #e50914;
+  --bg-color: #0f1014; /* Bahagyang mas madilim, CinemaRoll vibe */
+  --card-bg: #1a1d24;
+  --text-light: #f5f5f5;
+  --text-muted: #888888;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: "Saira", sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-light);
+  overflow-x: hidden;
+}
+
+/* --- HEADER & BURGER MENU --- */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 4%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 9000;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 16, 20, 0.95) 0%,
+    rgba(15, 16, 20, 0) 100%
+  );
+  transition:
+    background-color 0.4s ease,
+    padding 0.4s ease;
+}
+
+header.scrolled {
+  background-color: rgba(15, 16, 20, 0.98);
+  backdrop-filter: blur(10px);
+  padding: 15px 4%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid rgba(229, 9, 20, 0.2);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.burger-icon {
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.burger-icon:hover {
+  color: var(--netflix-red);
+  transform: scale(1.1);
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+.logo span {
+  color: var(--netflix-red);
+  font-style: italic; /* Ito ang magpapa-slant sa salitang Hub */
+}
+
+/* --- SIDEBAR MENU --- */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 300px;
+  height: 100vh;
+  background: #111317;
+  z-index: 9999;
+  overflow-y: auto;
+  transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8);
+  padding: 30px 20px;
+}
+.sidebar.active {
+  left: 0;
+}
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--netflix-red);
+  border-radius: 4px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.close-btn {
+  font-size: 28px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #888;
+}
+.close-btn:hover {
+  color: var(--netflix-red);
+  transform: rotate(90deg);
+}
+
+.menu-list {
+  list-style: none;
+}
+.menu-title {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 800;
+  margin: 25px 0 10px;
+  letter-spacing: 1.5px;
+}
+.menu-item {
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ccc;
+  transition: all 0.2s;
+  margin-bottom: 5px;
+}
+.menu-item:hover {
+  background: rgba(229, 9, 20, 0.1);
+  color: white;
+  transform: translateX(8px);
+}
+.menu-item i {
+  width: 20px;
+  text-align: center;
+  color: var(--netflix-red);
+}
+
+/* --- SMART SEARCH PANEL --- */
+.search-container {
+  position: relative;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 15px;
+  border-radius: 30px;
+  transition: 0.3s;
+}
+.search-box:focus-within {
+  border-color: var(--netflix-red);
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 15px rgba(229, 9, 20, 0.3);
+}
+.search-box input {
+  background: none;
+  border: none;
+  color: white;
+  outline: none;
+  padding: 0 8px;
+  width: 200px; /* Fixed block na siya palagi */
+  font-weight: 600;
+}
+
+/* Para hindi sobrang haba sa cellphone */
+@media (max-width: 768px) {
+  .search-box input {
+    width: 130px;
+  }
+}
+.search-box i {
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  width: 350px;
+  max-height: 400px;
+  background: var(--card-bg);
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow-y: auto;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+  display: none;
+  flex-direction: column;
+  z-index: 10000;
+}
+.search-item {
+  display: flex;
+  gap: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #222;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.search-item:hover {
+  background: #2a2a2a;
+}
+.search-item img {
+  width: 100px;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.search-item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.search-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+.search-item-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* --- HERO SLIDER --- */
+.hero-slider {
+  height: 85vh;
+  position: relative;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 0 4%;
+  transform: scale(1.05);
+}
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+.slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, var(--bg-color) 10%, transparent 60%),
+    linear-gradient(to top, var(--bg-color) 0%, transparent 40%);
+}
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 50%;
+  margin-top: 10vh;
+}
+.hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.1;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9);
+  text-transform: uppercase;
+}
+.hero-btn {
+  padding: 12px 30px;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+  text-transform: uppercase;
+}
+.hero-btn:hover {
+  background: var(--netflix-red);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* --- SCROLL ANIMATIONS --- */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- NETFLIX ROWS & CARDS --- */
+.container {
+  padding: 0 4%;
+  margin-top: -12vh;
+  position: relative;
+  z-index: 20;
+}
+.section-header {
+  margin: 3vw 0 1vw;
+  border-left: 4px solid var(--netflix-red);
+  padding-left: 10px;
+}
+.section-title {
+  font-size: 1.8vw; /* Pinalaki natin nang bahagya (mula 1.5vw) */
+  font-weight: 800; /* Mas ginawang bold (mula 600) */
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px; /* Mas niluwagan ng konti ang spacing */
+  font-style: italic; /* Ito ang magpapa-slant sa categories */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9); /* Para mas visible kahit may pictures sa background */
+}
+.row-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.movie-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  padding: 20px 0;
+  width: 100%;
+  scrollbar-width: none;
+}
+.movie-row::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  flex: 0 0 calc(100% / 6 - 12px);
+  background: var(--card-bg);
+  border-radius: 6px;
+  overflow: hidden;
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.4s ease;
+  cursor: pointer;
+  position: relative;
+}
+.card:hover {
+  transform: scale(1.15);
+  z-index: 99;
+  box-shadow: 0 15px 30px rgba(229, 9, 20, 0.4);
+}
+.card img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+  border-bottom: 2px solid #333;
+}
+.card-info {
+  padding: 12px;
+}
+.card-info strong {
+  display: block;
+  font-size: 1vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+.card-views {
+  color: var(--text-muted);
+  font-size: 0.85vw;
+  margin-top: 5px;
+  font-weight: 400;
+}
+
+.nav-btn {
+  background: rgba(20, 20, 20, 0.8);
+  color: white;
+  border: none;
+  width: 4%;
+  height: 100%;
+  position: absolute;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2vw;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s;
+  top: 0;
+}
+.row-container:hover .nav-btn {
+  opacity: 1;
+}
+.nav-btn:hover {
+  background: var(--netflix-red);
+  font-size: 2.5vw;
+}
+.prev {
+  left: 0;
+}
+.next {
+  right: 0;
+}
+
+/* --- PLAYER PAGE --- */
+.player-page-container {
+  padding: 120px 4% 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.player-wrapper {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  margin-bottom: 30px;
+  border: 1px solid #333;
+}
+.player-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.player-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+.player-info {
+  flex: 1;
+  min-width: 300px;
+}
+.player-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.player-stats {
+  display: flex;
+  gap: 15px;
+  color: var(--text-muted);
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.player-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.tag-pill {
+  background: #25282e;
+  border: 1px solid #444;
+  color: var(--text-light);
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.tag-pill:hover {
+  background: var(--netflix-red);
+  border-color: var(--netflix-red);
+  color: white;
+  transform: translateY(-3px);
+}
+.recommendation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+/* --- RESPONSIVE QUERIES --- */
+@media (max-width: 1024px) {
+  .card {
+    flex: 0 0 calc(100% / 4 - 12px);
+  }
+  .section-title {
+    font-size: 2vw;
+  }
+  .card-info strong {
+    font-size: 1.5vw;
+  }
+  .card-views {
+    font-size: 1.3vw;
+  }
+  .hero-title {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 768px) {
+  /* --- HERO SLIDER FIX --- */
+  .hero-slider {
+    height: 70vh;
+  } /* Mas nilakihan natin ang height para hindi siksik */
+  .hero-content {
+    max-width: 100%;
+    margin-top: 5vh;
+  } /* Iniangat natin ang text at button */
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  /* --- CONTAINER MARGIN FIX --- */
+  .container {
+    margin-top: -5vh;
+  } /* Binawasan ang pag-angat ng categories para hindi mag-overlap */
+
+  /* --- CARD & TEXT ADJUSTMENTS --- */
+  .card {
+    flex: 0 0 calc(100% / 2 - 12px);
+  } /* 2 cards per row pa rin */
+  .section-title {
+    font-size: 22px;
+    margin-bottom: 8px;
+    border-left-width: 4px;
+    padding-left: 10px;
+  }
+  .card-info strong {
+    font-size: 14px;
+  }
+  .card-views {
+    font-size: 12px;
+  }
+
+  /* --- HIDE ARROWS SA MOBILE --- */
+  .nav-btn {
+    display: none;
+  } /* Pwede mag-swipe ang mobile user kaya itatago ang arrows */
+
+  /* --- SEARCH & SIDEBAR FIX --- */
+  .search-box input:not(:placeholder-shown),
+  .search-box:focus-within input {
+    width: 160px;
+  }
+  .search-dropdown {
+    width: 280px;
+  }
+  .sidebar {
+    width: 280px;
+  }
+
+  /* --- PLAYER PAGE --- */
+  .player-title {
+    font-size: 1.8rem;
+  }
+}
+/* --- FOOTER STYLES (CINEMAROLL STYLE) --- */
+.site-footer {
+  background-color: var(--bg-dark); /* Parehong kulay ng background */
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 60px 4% 30px;
+  margin-top: 60px;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+/* Italicized red 'Hub' para sa logo sa footer */
+.footer-logo span {
+  color: var(--netflix-red);
+  font-style: italic;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(200px, 1fr)
+  ); /* Responsive columns */
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.footer-col h4 {
+  color: #777; /* Muted header text */
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+}
+
+.footer-col p {
+  color: #aaa;
+  font-size: 14px;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.05); /* Manipis na linya sa itaas ng copyright */
+  padding-top: 25px;
+  color: #444; /* Madilim na text para sa copyright gaya sa litrato */
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Responsive fix para sa Mobile Footer */
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr; /* Isang column na lang sa mobile */
+    gap: 30px;
+  }
+}
+/* --- AGE VERIFICATION MODAL --- */
+.age-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(15px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.age-modal {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 450px;
+  border: 1px solid #333;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+  margin: 20px;
+}
+.age-modal h2 {
+  color: var(--netflix-red);
+  font-size: 32px;
+  font-style: italic;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+.age-modal p {
+  color: #ccc;
+  margin-bottom: 30px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.age-btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 5px;
+  transition: 0.3s;
+  width: 100%;
+  max-width: 200px;
+}
+.btn-yes {
+  background: var(--netflix-red);
+  color: white;
+}
+.btn-yes:hover {
+  transform: scale(1.05);
+}
+.btn-no {
+  background: transparent;
+  border: 1px solid #666;
+  color: white;
+}
+.btn-no:hover {
+  background: #333;
+}
+
+/* --- SKELETON LOADERS --- */
+.skeleton {
+  background: #222;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+/* --- THUMBNAIL BADGES & FAVORITES --- */
+.card-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  border-bottom: 2px solid #333;
+}
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.duration-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  z-index: 10;
+}
+.quality-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--netflix-red);
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 800;
+  z-index: 10;
+  text-transform: uppercase;
+}
+.fav-btn {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  z-index: 15;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.fav-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+.fav-btn.active {
+  color: var(--netflix-red);
+}
+
+/* --- ADVERTISEMENT PLACEHOLDERS --- */
+.ad-container {
+  width: 100%;
+  max-width: 728px;
+  height: 90px;
+  background: #1a1d24;
+  border: 1px dashed #444;
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+@media (max-width: 768px) {
+  .ad-container {
+    height: 250px;
+    max-width: 300px; /* Standard mobile ad size */
+  }
+}
+/* ====================================================
+   BROWSE ALL & SEARCH GRID (BLOCK STYLE & RESPONSIVE)
+   Ito dapat ay nasa pinakailalim para hindi ma-override
+   ==================================================== */
+
+/* 1. Base para sa Desktop (6 blocks) */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 15px;
+  padding: 15px 0;
+}
+
+/* Override ang flex property kapag nasa grid ang card */
+.movie-grid .card {
+  width: 100%;
+  flex: none;
+}
+
+/* 2. Para sa Tablet (4 blocks) */
+@media (max-width: 1024px) {
+  .movie-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 3. Para sa Mobile / Cellphone (2 blocks) */
+@media (max-width: 768px) {
+  .movie-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}

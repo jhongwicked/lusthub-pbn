@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LustHub - Premium Adult Streaming</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description"
+        content="LustHub is your premium destination for high-quality adult streaming. Watch the best videos online.">
+    <meta name="keywords" content="adult, streaming, video, hd, lusthub">
+    <meta property="og:title" content="LustHub - Watch Premium Videos">
+    <meta property="og:description" content="The ultimate cinematic adult streaming experience.">
+    <meta property="og:image" content="favicon.svg">
+    <meta name="theme-color" content="#E50914">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header id="mainHeader">
+        <div class="header-left">
+            <i class="fas fa-bars burger-icon" id="menuToggleBtn"></i>
+            <a href="/" class="logo">Lust<span>Hub</span></a>
+        </div>
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Titles, genres, tags...">
+            </div>
+            <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar" id="sidebarMenu">
+        <div class="sidebar-header">
+            <a href="index" class="logo" style="font-size: 28px;">Lust<span>Hub</span></a>
+            <i class="fas fa-times close-btn" id="menuCloseBtn"></i>
+        </div>
+
+        <ul class="menu-list">
+            <li class="menu-title">Navigation</li>
+            <li class="menu-item" onclick="window.location.href='index'"><i class="fas fa-home"></i> Home</li>
+            <li class="menu-item" onclick="window.location.href='favorites.html'"><i class="fas fa-heart"></i> My
+                Favorites</li>
+            <li class="menu-title">Main Discovery</li>
+            <li class="menu-item" onclick="triggerMenuSearch('trending')"><i class="fas fa-fire"></i> Trending Now</li>
+            <li class="menu-item" onclick="triggerMenuSearch('latest')"><i class="fas fa-bolt"></i> New Uploads</li>
+            <li class="menu-item" onclick="triggerMenuSearch('hd')"><i class="fas fa-tv"></i> Top Rated HD</li>
+            <li class="menu-title">Browse Categories</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Amateur')"><i class="fas fa-video"></i> Amateur</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Anal')"><i class="fas fa-bullseye"></i> Anal</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Asian')"><i class="fas fa-globe-asia"></i> Asian</li>
+            <li class="menu-item" onclick="triggerMenuSearch('BBW')"><i class="fas fa-weight-hanging"></i> BBW</li>
+            <li class="menu-item" onclick="triggerMenuSearch('BDSM')"><i class="fas fa-link"></i> BDSM</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Big Tits')"><i class="fas fa-grin-hearts"></i> Big Tits
+            </li>
+            <li class="menu-item" onclick="triggerMenuSearch('Blonde')"><i class="fas fa-user"></i> Blonde</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Blowjob')"><i class="fas fa-lips"></i> Blowjob</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Brunette')"><i class="fas fa-user"></i> Brunette</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Cumshot')"><i class="fas fa-tint"></i> Cumshot</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Ebony')"><i class="fas fa-moon"></i> Ebony</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Hardcore')"><i class="fas fa-fire-alt"></i> Hardcore</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Latina')"><i class="fas fa-pepper-hot"></i> Latina</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Lesbian')"><i class="fas fa-venus-double"></i> Lesbian
+            </li>
+            <li class="menu-item" onclick="triggerMenuSearch('MILF')"><i class="fas fa-ring"></i> MILF</li>
+            <li class="menu-item" onclick="triggerMenuSearch('POV')"><i class="fas fa-eye"></i> POV</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Redhead')"><i class="fas fa-fire-alt"></i> Redhead</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Teen')"><i class="fas fa-heart"></i> Teen</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Threesome')"><i class="fas fa-users"></i> Threesome</li>
+
+            <li class="menu-title">Top Pornstars</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Abella Danger')"><i class="fas fa-star"></i> Abella Danger
+            </li>
+            <li class="menu-item" onclick="triggerMenuSearch('Lana Rhoades')"><i class="fas fa-star"></i> Lana Rhoades
+            </li>
+            <li class="menu-item" onclick="triggerMenuSearch('Riley Reid')"><i class="fas fa-star"></i> Riley Reid</li>
+            <li class="menu-item" onclick="triggerMenuSearch('Mia Khalifa')"><i class="fas fa-star"></i> Mia Khalifa
+            </li>
+            <li class="menu-item" onclick="triggerMenuSearch('Angela White')"><i class="fas fa-star"></i> Angela White
+            </li>
+        </ul>
+    </div>
+
+    <div class="hero-slider" id="heroSlider"></div>
+
+    <div class="container" id="dynamic-sections">
+        <div class="ad-container animate-on-scroll">
+            <span>Advertisement Space (728x90)</span>
+        </div>
+        <div id="search-section" style="display: none; padding-top: 40px;" class="animate-on-scroll">
+            <div class="section-header">
+                <h2 class="section-title" id="search-title">Search Results</h2>
+            </div>
+            <div class="recommendation-grid" id="search-grid"></div>
+        </div>
+
+        <div id="rows-container"></div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
