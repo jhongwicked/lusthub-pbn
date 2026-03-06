@@ -16,7 +16,7 @@ TARGETS = [
     },
     {
         "domain": "https://lusthub-support.com",
-        "path": "/watch",
+        "path": ".",
         "authority_url": "https://lusthub.com",  # Nagpapasa ng SEO juice sa King
     },
 ]
